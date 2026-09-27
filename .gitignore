@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .env
 .streamlit/secrets.toml
+openai.txt
+careerpilot.db
+requirement.txt
+tempCodeRunnerFile.py
