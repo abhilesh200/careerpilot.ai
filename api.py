@@ -35,13 +35,22 @@ from database import (
     get_chat_history,
     clear_chat_history
 )
-from fastapi import FastAPI
-from database import create_tables
+
+
+# =========================================================
+# FASTAPI APPLICATION
+# =========================================================
 
 app = FastAPI(
-    title="CareerPilot API",
+    title="CareerPilot AI API",
+    description=(
+        "AI-powered career intelligence API for "
+        "resume analysis, skill matching, career planning "
+        "and interview preparation."
+    ),
     version="1.0.0"
 )
+
 
 @app.on_event("startup")
 def startup_event():
