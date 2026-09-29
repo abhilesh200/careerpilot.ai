@@ -3,7 +3,7 @@ import time
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 import career_engine
 
@@ -24,6 +24,7 @@ from resume_parser import (
 from llm_service import generate_ai_response
 
 from database import (
+    create_tables,
     create_user,
     get_user_by_email,
     hash_password,
@@ -34,17 +35,6 @@ from database import (
     get_chat_history,
     clear_chat_history
 )
-from fastapi import FastAPI
-from database import create_tables
-
-app = FastAPI(
-    title="CareerPilot API",
-    version="1.0.0"
-)
-
-@app.on_event("startup")
-def startup_event():
-    create_tables()
 
 
 # =========================================================
@@ -60,6 +50,11 @@ app = FastAPI(
     ),
     version="1.0.0"
 )
+
+
+@app.on_event("startup")
+def startup_event():
+    create_tables()
 
 
 # =========================================================
