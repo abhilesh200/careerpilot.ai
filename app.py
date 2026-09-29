@@ -2,17 +2,44 @@ import streamlit as st
 import requests
 
 
+import streamlit as st
+import requests
+
+
 # ==================================================
 # CONFIGURATION
 # ==================================================
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://careerpilot-ai-2-qxcm.onrender.com"
 
 st.set_page_config(
     page_title="CareerPilot AI",
     page_icon="🚀",
     layout="wide"
 )
+
+
+# ==================================================
+# TEST API CONNECTION
+# ==================================================
+
+try:
+    test_response = requests.get(
+        f"{API_URL}/docs",
+        timeout=30
+    )
+
+    if test_response.status_code == 200:
+        st.sidebar.success("✅ CareerPilot API connected")
+
+    else:
+        st.sidebar.warning(
+            f"⚠️ API responded with status {test_response.status_code}"
+        )
+
+except Exception as e:
+    st.sidebar.error("❌ CareerPilot API connection failed")
+    st.sidebar.code(str(e))
 
 
 # ==================================================
