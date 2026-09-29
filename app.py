@@ -13,7 +13,7 @@ import requests
 
 API_URL = "https://careerpilot-ai-2-qxcm.onrender.com"
 
-API_URL = "https://careerpilot-api.onrender.com"
+
 
 
 st.set_page_config(
