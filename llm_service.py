@@ -1,9 +1,26 @@
-import requests
+
+import os
+from openai import OpenAI
 
 
-OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-MODEL_NAME = "llama3.2"
+# ============================================================
+# GROQ CONFIGURATION
+# ============================================================
 
+MODEL_NAME = "openai/gpt-oss-20b"
+
+client = None
+
+if os.getenv("GROQ_API_KEY"):
+    client = OpenAI(
+        api_key=os.getenv("GROQ_API_KEY"),
+        base_url="https://api.groq.com/openai/v1"
+    )
+
+
+# ============================================================
+# CAREERPILOT AI RESPONSE
+# ============================================================
 
 def generate_ai_response(
     message,
@@ -13,16 +30,28 @@ def generate_ai_response(
     roadmap=None,
     conversation_history=None
 ):
+
+    # --------------------------------------------------------
+    # Default values
+    # --------------------------------------------------------
+
     resume_skills = resume_skills or []
     missing_skills = missing_skills or []
     career_roles = career_roles or []
     roadmap = roadmap or []
     conversation_history = conversation_history or []
 
-    context = f"""
-You are CareerPilot AI, a personalized AI career coach and technical assistant.
 
-Your primary goal is to help the user build and advance their career.
+    # ========================================================
+    # CAREERPILOT SYSTEM CONTEXT
+    # ========================================================
+
+    context = f"""
+You are CareerPilot AI, a personalized AI career coach and
+technical assistant.
+
+Your primary goal is to help the user build and advance
+their career.
 
 USER PROFILE
 ============
@@ -43,9 +72,12 @@ Career roadmap:
 HOW YOU SHOULD RESPOND
 ======================
 
+
 1. PERSONALIZE CAREER QUESTIONS
+--------------------------------
 
 When the user asks about:
+
 - career choice
 - skills to learn
 - career roadmap
@@ -57,16 +89,19 @@ When the user asks about:
 
 use the user's CareerPilot profile above.
 
-Do not give generic advice when relevant profile information is available.
+Do not give generic advice when relevant profile
+information is available.
 
 
 2. GENERAL QUESTIONS
+--------------------
 
 The user can ask questions outside career topics.
 
 Answer general questions normally.
 
 You can help with:
+
 - Python
 - SQL
 - Data Science
@@ -88,6 +123,7 @@ You can help with:
 
 
 3. TECHNICAL QUESTIONS
+----------------------
 
 For technical questions:
 
@@ -100,6 +136,7 @@ For technical questions:
 
 
 4. CAREER QUESTIONS
+-------------------
 
 For career questions:
 
@@ -112,32 +149,51 @@ For career questions:
 
 
 5. FOLLOW-UP QUESTIONS
+----------------------
 
-Use the recent conversation to understand short follow-ups.
+Use the recent conversation to understand short
+follow-up questions.
 
 For example:
 
 User: What should I learn next?
-Assistant: Statistics should be your next focus.
+
+Assistant:
+Statistics should be your next focus.
 
 User: Why?
-Assistant: Explain why Statistics is relevant based on the user's profile.
+
+Assistant:
+Explain why Statistics is relevant based on the
+user's profile.
 
 User: Give me a project.
-Assistant: Suggest a project related to Statistics.
+
+Assistant:
+Suggest a project related to Statistics.
 
 
 6. DO NOT INVENT USER INFORMATION
+----------------------------------
 
 Only use information provided in the CareerPilot profile.
 
-Do not claim that the user has a skill, project, degree,
-experience, or job unless it appears in the provided context.
+Do not claim that the user has a:
+
+- skill
+- project
+- degree
+- experience
+- job
+
+unless it appears in the provided context.
 
 
 7. RESPONSE STYLE
+-----------------
 
 Be:
+
 - Helpful
 - Clear
 - Practical
@@ -146,12 +202,15 @@ Be:
 
 Avoid unnecessary disclaimers.
 
-When the user asks a simple question, give a simple answer.
+When the user asks a simple question,
+give a simple answer.
 
-When the user asks for a detailed explanation, provide a detailed answer.
+When the user asks for a detailed explanation,
+provide a detailed answer.
 
 
 8. CAREERPILOT IDENTITY
+-----------------------
 
 You are CareerPilot AI.
 
@@ -170,17 +229,29 @@ Resume Assistant
 Project Mentor
 """
 
+
+    # ========================================================
+    # RECENT CONVERSATION HISTORY
+    # ========================================================
+
     recent_history = ""
 
     for item in conversation_history[-8:]:
+
         if hasattr(item, "role"):
             role = item.role
             content = item.content
+
         else:
             role = item.get("role", "")
             content = item.get("content", "")
 
         recent_history += f"\n{role.upper()}: {content}"
+
+
+    # ========================================================
+    # FINAL PROMPT
+    # ========================================================
 
     prompt = f"""
 {context}
@@ -194,37 +265,58 @@ CURRENT USER QUESTION:
 Provide the best possible answer.
 """
 
+
+    # ========================================================
+    # GROQ API REQUEST
+    # ========================================================
+
     try:
-        response = requests.post(
-            OLLAMA_URL,
-            json={
-                "model": MODEL_NAME,
-                "prompt": prompt,
-                "stream": False
-            },
-            timeout=120
+
+        # Check API key
+        if not os.getenv("GROQ_API_KEY"):
+
+            return (
+                "CareerPilot AI is not configured correctly. "
+                "GROQ_API_KEY is missing."
+            )
+
+
+        # Check client
+        if client is None:
+
+            return (
+                "CareerPilot AI could not initialize the "
+                "Groq client."
+            )
+
+
+        # Send request to Groq
+        response = client.responses.create(
+            model=MODEL_NAME,
+            input=prompt
         )
 
-        response.raise_for_status()
 
-        data = response.json()
+        # Get AI response
+        answer = response.output_text
 
-        return data.get(
-            "response",
-            "Sorry, I could not generate a response."
-        ).strip()
 
-    except requests.exceptions.ConnectionError:
-        return (
-            "CareerPilot AI could not connect to Ollama. "
-            "Make sure Ollama is running."
-        )
+        # Empty response protection
+        if not answer:
 
-    except requests.exceptions.Timeout:
-        return (
-            "CareerPilot AI took too long to generate a response. "
-            "Please try again."
-        )
+            return (
+                "Sorry, I could not generate a response."
+            )
+
+
+        return answer.strip()
+
+
+    # ========================================================
+    # ERROR HANDLING
+    # ========================================================
 
     except Exception as e:
+
         return f"CareerPilot AI error: {str(e)}"
+
