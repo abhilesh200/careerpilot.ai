@@ -1,12 +1,17 @@
-import sqlite3
+import os
 import bcrypt
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
-DATABASE_NAME = "careerpilot.db"
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def get_connection():
-    connection = sqlite3.connect(DATABASE_NAME)
-    connection.row_factory = sqlite3.Row
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL environment variable is not set.")
+
+    connection = psycopg2.connect(DATABASE_URL)
     return connection
 
 
@@ -16,7 +21,7 @@ def create_tables():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
@@ -26,7 +31,7 @@ def create_tables():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS career_profiles (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL,
             resume_skills TEXT,
             missing_skills TEXT,
@@ -41,7 +46,7 @@ def create_tables():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS chat_messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL,
             role TEXT NOT NULL,
             content TEXT NOT NULL,
@@ -51,6 +56,7 @@ def create_tables():
     """)
 
     connection.commit()
+    cursor.close()
     connection.close()
 
 
@@ -61,13 +67,16 @@ def create_user(name, email, password_hash):
     cursor.execute(
         """
         INSERT INTO users (name, email, password_hash)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
+        RETURNING id
         """,
         (name, email, password_hash)
     )
 
+    user_id = cursor.fetchone()[0]
+
     connection.commit()
-    user_id = cursor.lastrowid
+    cursor.close()
     connection.close()
 
     return user_id
@@ -75,18 +84,20 @@ def create_user(name, email, password_hash):
 
 def get_user_by_email(email):
     connection = get_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
         """
         SELECT *
         FROM users
-        WHERE email = ?
+        WHERE email = %s
         """,
         (email,)
     )
 
     user = cursor.fetchone()
+
+    cursor.close()
     connection.close()
 
     return user
@@ -113,7 +124,8 @@ def save_career_profile(
             roadmap,
             resume_text
         )
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        RETURNING id
         """,
         (
             user_id,
@@ -125,8 +137,10 @@ def save_career_profile(
         )
     )
 
+    profile_id = cursor.fetchone()[0]
+
     connection.commit()
-    profile_id = cursor.lastrowid
+    cursor.close()
     connection.close()
 
     return profile_id
@@ -134,13 +148,13 @@ def save_career_profile(
 
 def get_career_profile(user_id):
     connection = get_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
         """
         SELECT *
         FROM career_profiles
-        WHERE user_id = ?
+        WHERE user_id = %s
         ORDER BY id DESC
         LIMIT 1
         """,
@@ -148,6 +162,8 @@ def get_career_profile(user_id):
     )
 
     profile = cursor.fetchone()
+
+    cursor.close()
     connection.close()
 
     return profile
@@ -164,13 +180,16 @@ def save_chat_message(user_id, role, content):
             role,
             content
         )
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
+        RETURNING id
         """,
         (user_id, role, content)
     )
 
+    message_id = cursor.fetchone()[0]
+
     connection.commit()
-    message_id = cursor.lastrowid
+    cursor.close()
     connection.close()
 
     return message_id
@@ -178,20 +197,22 @@ def save_chat_message(user_id, role, content):
 
 def get_chat_history(user_id, limit=50):
     connection = get_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
         """
         SELECT id, user_id, role, content, created_at
         FROM chat_messages
-        WHERE user_id = ?
+        WHERE user_id = %s
         ORDER BY id ASC
-        LIMIT ?
+        LIMIT %s
         """,
         (user_id, limit)
     )
 
     messages = cursor.fetchall()
+
+    cursor.close()
     connection.close()
 
     return messages
@@ -204,12 +225,13 @@ def clear_chat_history(user_id):
     cursor.execute(
         """
         DELETE FROM chat_messages
-        WHERE user_id = ?
+        WHERE user_id = %s
         """,
         (user_id,)
     )
 
     connection.commit()
+    cursor.close()
     connection.close()
 
 
@@ -236,4 +258,4 @@ def verify_password(password, password_hash):
 
 if __name__ == "__main__":
     create_tables()
-    print("CareerPilot database created successfully.")
+    print("CareerPilot PostgreSQL database created successfully.")
