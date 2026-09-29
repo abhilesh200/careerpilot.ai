@@ -1,51 +1,98 @@
 # 🚀 CareerPilot AI
 
-### AI-Powered Career Coach, Technical Mentor & Career Planning Assistant
+### AI-Powered Career Coach & Technical Assistant
 
-CareerPilot AI is an **end-to-end AI career assistant** designed to help users understand their career profile, identify skill gaps, explore suitable career roles, build learning roadmaps, prepare for interviews, and get personalized technical guidance.
+<p align="center">
+  <b>Personalized career guidance powered by AI, FastAPI, PostgreSQL, Streamlit & Groq</b>
+</p>
 
-The application combines **AI, FastAPI, PostgreSQL, Streamlit, and Groq** into a production-style web application.
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql)
+![Groq](https://img.shields.io/badge/Groq-AI-orange)
+![Render](https://img.shields.io/badge/Render-Deployment-46E3B7)
+![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)
+
+</p>
 
 ---
 
-## 🌟 Features
+## 🌐 Live Project
 
-### 🤖 AI Career Chatbot
+### 🚀 CareerPilot AI
 
-CareerPilot AI provides personalized conversations using the user's career profile.
+**Frontend:**
+Add your Streamlit Cloud URL here.
 
-It can help with:
+**Backend API:**
+https://careerpilot-ai-2-qxcm.onrender.com
+
+**API Documentation:**
+https://careerpilot-ai-2-qxcm.onrender.com/docs
+
+---
+
+# 📌 Overview
+
+**CareerPilot AI** is an end-to-end AI-powered career assistant designed to help users understand their career profile, identify skill gaps, explore career roles, create learning roadmaps, prepare for interviews, and receive technical guidance.
+
+The application combines a modern web frontend with a REST API, persistent PostgreSQL storage, and cloud-based AI inference through Groq.
+
+The project demonstrates how to build and deploy a complete AI application rather than only a standalone machine-learning model.
+
+---
+
+# ✨ Key Features
+
+### 🤖 AI Career Assistant
+
+Users can interact with CareerPilot using natural language.
+
+The assistant can help with:
 
 * Career planning
 * Skill recommendations
 * Career roadmaps
 * Job preparation
 * Interview preparation
-* Project recommendations
+* Project ideas
 * Technical questions
-* Programming problems
+* Programming
+* Data Science
+* Machine Learning
+* AI & NLP
 * Resume-related guidance
-* Learning guidance
 
 ---
 
-### 🎯 Personalized Career Guidance
+### 🎯 Personalized Responses
 
-The chatbot can use information such as:
+CareerPilot can use information from the user's profile, including:
 
-* Resume skills
-* Missing skills
-* Target career roles
-* Career roadmap
-* Previous conversation history
+```text
+Resume Skills
+      ↓
+Missing Skills
+      ↓
+Career Roles
+      ↓
+Career Roadmap
+      ↓
+Recent Conversation
+      ↓
+Personalized AI Response
+```
 
-This allows CareerPilot to provide more personalized responses instead of only giving generic answers.
+This allows the chatbot to provide context-aware career guidance.
 
 ---
 
-### 💬 Conversation History
+### 💬 Conversational AI
 
-CareerPilot maintains recent conversation context so users can ask follow-up questions naturally.
+CareerPilot maintains recent conversation context so users can ask follow-up questions.
 
 Example:
 
@@ -54,78 +101,128 @@ User:
 What should I learn next?
 
 CareerPilot:
-Statistics should be your next focus.
+Based on your current profile, focus on...
 
 User:
 Why?
 
 CareerPilot:
-Based on your current skill profile...
+Because those skills address your current gaps...
+
+User:
+Give me a project.
+
+CareerPilot:
+Here is a project aligned with those skills...
 ```
 
 ---
 
-### 👤 User Authentication
+### 👤 Authentication
 
-The application supports:
+The backend supports:
 
 * User registration
 * User login
-* User profile management
+* User identification
 * Persistent user data
 
-Passwords are handled by the backend authentication system and user information is stored in PostgreSQL.
-
 ---
 
-### 🧠 AI-Powered Technical Assistance
+### 🗄️ PostgreSQL Database
 
-CareerPilot can assist with:
+CareerPilot stores application data using PostgreSQL.
 
-* Python
-* SQL
-* Data Science
-* Machine Learning
-* Deep Learning
-* Artificial Intelligence
-* NLP
-* Statistics
-* FastAPI
-* APIs
-* Docker
-* Git
-* Programming
-* Debugging
-* Computer Science
-
----
-
-## 🏗️ System Architecture
+Current database tables include:
 
 ```text
-                         ┌──────────────────────┐
-                         │   Streamlit Cloud    │
-                         │      Frontend        │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                         ┌──────────────────────┐
-                         │     FastAPI API      │
-                         │        Render        │
-                         └──────────┬───────────┘
-                                    │
-                    ┌───────────────┴────────────────┐
-                    │                                │
-                    ▼                                ▼
-          ┌──────────────────┐             ┌──────────────────┐
-          │   PostgreSQL     │             │      Groq AI     │
-          │     Database     │             │   AI Inference   │
-          └──────────────────┘             └──────────────────┘
+users
+career_profiles
+chat_messages
 ```
 
 ---
 
-# 🛠️ Tech Stack
+### ⚡ FastAPI Backend
+
+The application exposes REST API endpoints through FastAPI.
+
+Interactive API documentation is available through Swagger UI.
+
+```text
+https://careerpilot-ai-2-qxcm.onrender.com/docs
+```
+
+---
+
+# 🏗️ System Architecture
+
+```text
+                    ┌─────────────────────┐
+                    │    User / Browser   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Streamlit Cloud   │
+                    │      Frontend       │
+                    └──────────┬──────────┘
+                               │
+                               │ HTTP Requests
+                               ▼
+                    ┌─────────────────────┐
+                    │   FastAPI Backend   │
+                    │       Render        │
+                    └──────────┬──────────┘
+                               │
+                ┌──────────────┴──────────────┐
+                │                             │
+                ▼                             ▼
+       ┌─────────────────┐           ┌─────────────────┐
+       │   PostgreSQL    │           │     Groq AI     │
+       │     Database    │           │  Model Inference│
+       └─────────────────┘           └─────────────────┘
+```
+
+---
+
+# 🔄 Application Workflow
+
+```text
+                    User
+                     │
+                     ▼
+              Register / Login
+                     │
+                     ▼
+              Career Profile
+                     │
+                     ▼
+                Ask Question
+                     │
+                     ▼
+             Streamlit Frontend
+                     │
+                     ▼
+               FastAPI API
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+          ▼                     ▼
+      PostgreSQL             Groq AI
+          │                     │
+          └──────────┬──────────┘
+                     │
+                     ▼
+            Personalized Response
+                     │
+                     ▼
+                   User
+```
+
+---
+
+# 🛠️ Technology Stack
 
 ## Frontend
 
@@ -138,16 +235,16 @@ CareerPilot can assist with:
 * FastAPI
 * Uvicorn
 
-## Database
-
-* PostgreSQL
-* psycopg2
-
 ## AI
 
 * Groq API
 * OpenAI-compatible Python SDK
 * GPT-OSS model
+
+## Database
+
+* PostgreSQL
+* psycopg2
 
 ## Deployment
 
@@ -163,118 +260,86 @@ CareerPilot can assist with:
 careerpilot.ai/
 │
 ├── app.py
+│   └── Streamlit frontend
 │
 ├── api.py
+│   └── FastAPI backend
 │
 ├── llm_service.py
+│   └── Groq AI integration
 │
 ├── database.py
+│   └── PostgreSQL connection & tables
 │
 ├── requirements.txt
+│   └── Python dependencies
 │
 ├── README.md
 │
 └── .gitignore
 ```
 
-### Important Files
-
-| File               | Description                                |
-| ------------------ | ------------------------------------------ |
-| `app.py`           | Streamlit frontend                         |
-| `api.py`           | FastAPI backend and API endpoints          |
-| `llm_service.py`   | AI/Groq integration and CareerPilot prompt |
-| `database.py`      | PostgreSQL database connection and tables  |
-| `requirements.txt` | Python dependencies                        |
-| `README.md`        | Project documentation                      |
-
 ---
 
-# 🔄 Application Workflow
+# 🧠 AI Architecture
+
+The AI service builds a structured context before sending a request to Groq.
 
 ```text
-1. User opens CareerPilot
-            ↓
-2. User registers / logs in
-            ↓
-3. User career profile is loaded
-            ↓
-4. User asks a question
-            ↓
-5. Streamlit sends request to FastAPI
-            ↓
-6. FastAPI retrieves relevant profile data
-            ↓
-7. Career context is added to the AI prompt
-            ↓
-8. Request is sent to Groq
-            ↓
-9. Groq generates response
-            ↓
-10. CareerPilot returns personalized answer
-            ↓
-11. Conversation can continue using recent history
+User Profile
+│
+├── Resume Skills
+├── Missing Skills
+├── Career Roles
+├── Career Roadmap
+└── Conversation History
+        │
+        ▼
+   CareerPilot Prompt
+        │
+        ▼
+      Groq API
+        │
+        ▼
+   AI Generated Response
 ```
+
+The AI service is separated into `llm_service.py`, making the LLM layer easier to modify independently from the API and frontend.
 
 ---
 
 # 🔌 API
 
-CareerPilot provides a FastAPI backend.
-
-### Production API
+## Production Backend
 
 ```text
 https://careerpilot-ai-2-qxcm.onrender.com
 ```
 
-### Swagger Documentation
+## Swagger UI
 
 ```text
 https://careerpilot-ai-2-qxcm.onrender.com/docs
 ```
 
-The Swagger interface can be used to test the backend endpoints directly.
-
----
-
-# 🤖 AI Integration
-
-CareerPilot uses Groq for cloud-based AI inference.
-
-The application uses an OpenAI-compatible client configuration:
-
-```python
-client = OpenAI(
-    api_key=os.getenv("GROQ_API_KEY"),
-    base_url="https://api.groq.com/openai/v1"
-)
-```
-
-The API key is loaded through an environment variable.
-
-```text
-GROQ_API_KEY
-```
-
-No API key is stored inside the source code.
+Swagger can be used to test available API endpoints directly.
 
 ---
 
 # 🔐 Environment Variables
 
-Create the following environment variables for the backend:
+The application uses environment variables for sensitive configuration.
+
+Required backend variables:
 
 ```text
+DATABASE_URL=your_postgresql_url
 GROQ_API_KEY=your_groq_api_key
-DATABASE_URL=your_postgresql_database_url
 ```
 
 ### Security
 
-Never commit API keys or database credentials to GitHub.
-
-Use environment variables instead.
+API keys and database credentials are **never stored directly in the source code**.
 
 Example `.gitignore`:
 
@@ -288,9 +353,9 @@ __pycache__/
 
 ---
 
-# 💻 Local Installation
+# 💻 Local Setup
 
-## 1. Clone the repository
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/abhilesh200/careerpilot.ai.git
@@ -302,15 +367,13 @@ cd careerpilot.ai
 
 ---
 
-## 2. Create a virtual environment
-
-Windows:
+## 2. Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate it:
+Activate on Windows:
 
 ```bash
 venv\Scripts\activate
@@ -318,7 +381,7 @@ venv\Scripts\activate
 
 ---
 
-## 3. Install dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -326,17 +389,15 @@ pip install -r requirements.txt
 
 ---
 
-## 4. Configure environment variables
+## 4. Configure Environment Variables
 
-Set your Groq API key.
-
-Windows CMD:
+Set your Groq API key:
 
 ```cmd
 setx GROQ_API_KEY "your_groq_api_key"
 ```
 
-Set your PostgreSQL database URL:
+Configure your PostgreSQL database:
 
 ```text
 DATABASE_URL=your_database_url
@@ -348,13 +409,13 @@ Restart your terminal after using `setx`.
 
 # ▶️ Run Backend
 
-Start the FastAPI server:
+Start FastAPI:
 
 ```bash
 uvicorn api:app --reload
 ```
 
-The API will run at:
+Backend:
 
 ```text
 http://127.0.0.1:8000
@@ -376,45 +437,25 @@ Start Streamlit:
 streamlit run app.py
 ```
 
-The frontend will open in your browser.
-
 ---
 
-# 🗄️ Database
-
-CareerPilot uses PostgreSQL for persistent data storage.
-
-The database contains tables for:
-
-```text
-users
-career_profiles
-chat_messages
-```
-
-The FastAPI application initializes/verifies the required PostgreSQL tables during startup.
-
----
-
-# 🌐 Deployment
+# ☁️ Deployment
 
 ## Backend — Render
 
-The FastAPI backend is deployed using Render.
-
-Build command:
+### Build Command
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Start command:
+### Start Command
 
 ```bash
 uvicorn api:app --host 0.0.0.0 --port $PORT
 ```
 
-Required environment variables:
+### Environment Variables
 
 ```text
 DATABASE_URL
@@ -425,9 +466,9 @@ GROQ_API_KEY
 
 ## Frontend — Streamlit Cloud
 
-The Streamlit frontend connects to the deployed FastAPI backend.
+The Streamlit application communicates with the deployed FastAPI backend.
 
-The frontend API URL is configured as:
+Backend URL:
 
 ```python
 API_URL = "https://careerpilot-ai-2-qxcm.onrender.com"
@@ -435,131 +476,145 @@ API_URL = "https://careerpilot-ai-2-qxcm.onrender.com"
 
 ---
 
-# 📊 Database Flow
+# 📊 Database Design
+
+CareerPilot currently uses three primary tables:
 
 ```text
-User
- │
- ├── Registration
- │       ↓
- │     users
- │
- ├── Career Profile
- │       ↓
- │   career_profiles
- │
- └── AI Chat
-         ↓
-    chat_messages
+┌──────────────────────┐
+│        users         │
+├──────────────────────┤
+│ id                   │
+│ name                 │
+│ email                │
+│ password             │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   career_profiles    │
+├──────────────────────┤
+│ user_id              │
+│ resume skills        │
+│ missing skills       │
+│ career roles         │
+│ roadmap              │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│    chat_messages     │
+├──────────────────────┤
+│ user_id              │
+│ role                 │
+│ message              │
+│ timestamp            │
+└──────────────────────┘
 ```
 
 ---
 
-# 🧠 CareerPilot AI Prompt System
+# 🧪 Example Interaction
 
-The AI receives structured career context:
-
-```text
-USER PROFILE
-│
-├── Resume Skills
-├── Missing Skills
-├── Career Roles
-├── Career Roadmap
-└── Recent Conversation
-```
-
-This information is combined with the current user question before sending the request to the AI model.
-
-This enables contextual conversations such as:
+### User
 
 ```text
-User:
-What should I learn next?
-
-CareerPilot:
-Based on your current skills and identified gaps,
-focus on...
-
-User:
-Give me a project.
-
-CareerPilot:
-A suitable project would be...
+I want to become a Data Scientist. What should I learn?
 ```
+
+### CareerPilot
+
+```text
+Based on your current profile, you should focus on
+strengthening Python, SQL, statistics and machine learning.
+
+A practical next step would be to build an end-to-end
+machine learning project...
+```
+
+The actual response is generated dynamically using the user's available CareerPilot context.
 
 ---
 
-# 🚀 Future Improvements
+# 🚀 Engineering Highlights
 
-Planned improvements include:
+This project demonstrates practical experience with:
 
-* Resume parsing
-* Job recommendation system
-* Job description analysis
-* ATS resume scoring
-* Skill-gap visualization
-* Personalized learning plans
+* REST API development
+* FastAPI
+* PostgreSQL
+* Database integration
+* AI API integration
+* Prompt engineering
+* Conversational AI
+* Environment variable management
+* Cloud deployment
+* Streamlit application development
+* Git/GitHub workflow
+* Backend/frontend integration
+
+---
+
+# 📈 Future Improvements
+
+Potential future extensions:
+
+* Resume PDF parsing
+* Automated skill extraction
+* Job-description analysis
+* ATS-style resume analysis
+* Job recommendation
 * Interview simulation
-* Mock technical interviews
+* Technical interview mode
+* Learning progress tracking
+* Career analytics dashboard
 * Job application tracking
-* LinkedIn profile analysis
-* AI-generated project recommendations
-* Real-time job search
-* Advanced analytics dashboard
+* More advanced profile-based recommendations
 
 ---
 
-# 📈 Project Goals
+# 🎯 Project Objective
 
-CareerPilot AI aims to combine:
+CareerPilot AI was built to demonstrate how modern AI applications can combine:
 
 ```text
-AI
-+
-Career Guidance
-+
-Technical Mentoring
-+
-Resume Assistance
-+
-Skill Gap Analysis
-+
-Learning Roadmaps
-+
-Interview Preparation
+Artificial Intelligence
+        +
+Backend Engineering
+        +
+Database Systems
+        +
+Frontend Development
+        +
+Cloud Deployment
 ```
 
-into a single career development platform.
+into a single end-to-end application.
 
 ---
 
 # 👨‍💻 Author
 
-**Abhilesh Kumar**
+## Abhilesh Kumar
 
-Data Science | Machine Learning | AI | NLP | Python
+**Data Science | Machine Learning | AI | NLP | Python**
 
-GitHub:
+### GitHub
 
-```text
 https://github.com/abhilesh200
-```
 
-LinkedIn:
+### LinkedIn
 
-```text
 https://www.linkedin.com/in/abhilesh-kumar-2a4aa7286
-```
 
 ---
 
-# ⭐ Support
+# ⭐ If You Like This Project
 
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
+Consider giving the repository a ⭐ on GitHub.
 
 ---
 
 ## 📄 License
 
-This project is intended for educational and portfolio purposes.
+This project is intended for educational, portfolio, and demonstration purposes.
