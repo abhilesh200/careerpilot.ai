@@ -10,11 +10,11 @@ import requests
 # CONFIGURATION
 # ==================================================
 
-<<<<<<< Updated upstream
+
 API_URL = "https://careerpilot-ai-2-qxcm.onrender.com"
-=======
+
 API_URL = "https://careerpilot-api.onrender.com"
->>>>>>> Stashed changes
+
 
 st.set_page_config(
     page_title="CareerPilot AI",
